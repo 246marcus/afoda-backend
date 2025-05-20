@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 // Load environment variables
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
-// Debug logs
+// Debug logsnp
 console.log("Environment:", {
   MONGODB_URI: process.env.MONGODB_URI ? "Loaded" : "Missing",
   PORT: process.env.PORT,
@@ -29,7 +29,8 @@ const PORT = process.env.PORT || 5000;
 // Enhanced CORS configuration
 app.use(
   cors({
-    origin: true,
+    origin: "http://localhost:8080", // Your frontend origin
+
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],

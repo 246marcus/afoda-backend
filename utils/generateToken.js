@@ -15,15 +15,12 @@ export const generateToken = (user) => {
 
 export const verifyToken = (token) => {
   try {
-    const local_token = token?.headers?.authorization
-      ? token?.headers?.authorization.split("Bearer ")[1]
-      : token;
-    console.log(local_token);
+    // Don't try to handle both raw tokens and request objects in the same function
+    // Just verify the token that's passed in
     const verified = jwt.verify(
-      local_token,
+      token,
       process.env.JWT_SECRET || "your_jwt_secret_key"
     );
-
     return verified;
   } catch (error) {
     console.error("Token verification failed:", error);

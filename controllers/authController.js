@@ -15,24 +15,18 @@ export const register = async (req, res) => {
     await newUser.save();
 
     const token = generateToken(newUser);
-    res
-      .cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-      })
-      .status(201)
-      .json({
-        message: "User registered successfully",
-        user: {
-          _id: newUser._id,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
-          email: newUser.email,
-          role: newUser.role,
-        },
-      });
+
+    res.status(201).json({
+      message: "User registered successfully",
+      token, // Include token in response
+      user: {
+        _id: newUser._id,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        email: newUser.email,
+        role: newUser.role,
+      },
+    });
   } catch (err) {
     console.error("Register error:", err);
     res.status(500).json({
@@ -44,6 +38,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
+
+  console.log(email);
+  console.log(password);
 
   try {
     const user = await User.findOne({ email }).select("+password");
@@ -58,20 +55,18 @@ export const login = async (req, res) => {
 
     const token = generateToken(user);
 
-    res
-      .cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "Strict",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      })
-      .status(200)
-      .json({
-        message: "Login successful",
-        token,
-        role: user.role,
+    // Include BOTH token and full user object in response
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      user: {
         _id: user._id,
-      });
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (err) {
     console.error("Login error:", err);
     res.status(500).json({
@@ -81,7 +76,22 @@ export const login = async (req, res) => {
   }
 };
 
-export default {
-  register,
-  login,
+// Add the getMe endpoint
+export const getMe = async (req, res) => {
+  try {
+    // The user has already been attached to req.user by the protect middleware
+    res.status(200).json({
+      user: req.user,
+    });
+  } catch (error) {
+    console.error("Get current user error:", error);
+    res.status(500).json({
+      message: "Server error retrieving user data",
+      error: error.message,
+    });
+  }
+};
+
+export const logout = async (req, res) => {
+  res.status(200).json({ message: "Logged out successfully" });
 };
