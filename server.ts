@@ -19,7 +19,8 @@ app.use(cookieParser());
 // CORS Configuration
 app.use(
   cors({
-    origin: "http://localhost:8080", // or your frontend deployed domain
+    origin:
+      "https://afoda-fresh-market-jmsq2204s-246marcus-projects.vercel.app",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
