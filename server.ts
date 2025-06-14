@@ -19,8 +19,7 @@ app.use(cookieParser());
 // CORS Configuration
 app.use(
   cors({
-    origin:
-      "https://afoda-fresh-market-jmsq2204s-246marcus-projects.vercel.app",
+    origin: ["https://www.afoda.store"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
