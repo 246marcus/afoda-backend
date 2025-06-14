@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, CookieOptions } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User"; // Remove IUser import
 import { AuthRequest } from "../middleware/authMiddleware";
@@ -34,12 +34,14 @@ export const registerUser = async (
 
     const token = generateToken(newUser._id.toString());
 
-    res.cookie("token", token, {
+    const cookieOptions: CookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    };
+
+    res.cookie("token", token, cookieOptions);
 
     res.status(201).json({
       message: "Registration successful",
@@ -76,12 +78,14 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
     const token = generateToken(user._id.toString());
 
-    res.cookie("token", token, {
+    const cookieOptions: CookieOptions = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    };
+
+    res.cookie("token", token, cookieOptions);
 
     res.status(200).json({
       message: "Login successful",
