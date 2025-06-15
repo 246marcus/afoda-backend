@@ -82,7 +82,6 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      domain: ".afoda.store",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     };
 
