@@ -16,18 +16,46 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cookieParser());
 
-// CORS Configuration
+// CORS Configuration - UPDATED
+const allowedOrigins = ["https://www.afoda.store"];
+
+// Filter out undefined values
+const filteredOrigins = allowedOrigins.filter(Boolean);
+
+// CORS Configuration - Add your actual Vercel URL
 app.use(
   cors({
-    origin: ["https://www.afoda.store"],
+    origin: [
+      "https://www.afoda.store",
+      "https://afoda.store",
+      "https://afoda-fresh-market.vercel.app", // 👈 ADD YOUR REAL URL HERE
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
+// Add debugging middleware to log requests
+app.use((req, res, next) => {
+  console.log(`📡 ${req.method} ${req.path}`);
+  console.log("🌐 Origin:", req.headers.origin);
+  console.log("🍪 Cookies:", req.cookies);
+  next();
+});
+
 // Routes
 app.use("/api/auth", authRoutes);
+
+// Test endpoint for debugging
+app.get("/api/test", (req, res) => {
+  res.json({
+    message: "Server is working!",
+    origin: req.headers.origin,
+    cookies: req.cookies,
+    headers: Object.keys(req.headers),
+  });
+});
 
 // MongoDB Connection
 const mongoURI = process.env.MONGODB_URI as string;
@@ -38,5 +66,5 @@ mongoose
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
