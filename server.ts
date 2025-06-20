@@ -28,8 +28,6 @@ app.use(
     origin: [
       "https://www.afoda.store",
       "https://afoda.store",
-      "https://afoda-fresh-market.vercel.app",
-      "https://afoda-backend.onrender.com",
       // 👈 ADD YOUR REAL URL HERE
     ],
     credentials: true,
