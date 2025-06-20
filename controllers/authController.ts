@@ -17,7 +17,7 @@ const getCookieOptions = (): CookieOptions => {
     secure: true, // Always true for production HTTPS
     sameSite: "none", // Required for cross-origin cookies
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    domain: ".afoda.store", // Your domain
+    // domain: ".afoda.store", // Your domain
     path: "/",
   };
 };
