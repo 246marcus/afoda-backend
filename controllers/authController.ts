@@ -12,12 +12,14 @@ const generateToken = (userId: string): string => {
 
 // Get cookie options for production
 const getCookieOptions = (): CookieOptions => {
+  const isProduction = process.env.NODE_ENV === "production";
+
   return {
     httpOnly: true,
-    secure: true, // Always true for production HTTPS
-    sameSite: "none", // Required for cross-origin cookies
+    secure: isProduction, // Always true for production HTTPS
+    sameSite: isProduction ? "none" : "lax", // Required for cross-origin cookies
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    domain: ".afoda.store", // Your domain
+    domain: isProduction ? ".afoda.store" : "localhost", // Your domain
     path: "/",
   };
 };
